@@ -1,0 +1,10 @@
+---
+# Firewall - rules for NTP Server
+# Author: David HEURTEVENT
+# Date : 2023-09-18
+- hosts: all
+  become: true
+  collections:
+    - fruafr.networking
+  roles:
+    - fw_rules_ntp_server

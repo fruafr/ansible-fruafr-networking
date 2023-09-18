@@ -1,0 +1,24 @@
+---
+# tasks file for fw_rules_ntp_server
+
+# Debian
+- block:
+  #use ufw
+  
+  #sudo ufw allow 123/udp
+  - name: UFW - NTP server - ufw allow 123/udp
+    ufw:
+      rule: allow
+      port: '123'
+      proto: udp
+      comment: NTP
+  
+  #sudo ufw enable
+  - name: UFW - Ensure UFW is enabled
+    ufw:
+      state: enabled
+
+  #To check status of UFW
+  #sudo ufw status
+  #sudo ufw status verbose
+  when: ansible_os_family == 'Debian'
