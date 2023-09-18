@@ -1,0 +1,8 @@
+---
+# defaults file for ping_host_multi
+ping_command: "ping -c 1 -q -W 1"
+targets:
+  - "8.8.8.8"
+  - "8.8.4.4"
+  - "1.1.1.1"
+  - "1.0.0.1"

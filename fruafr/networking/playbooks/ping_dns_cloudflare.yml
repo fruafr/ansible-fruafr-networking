@@ -1,0 +1,13 @@
+---
+# Ping Cloudflare DNS servers (IPv4)
+# Author: David HEURTEVENT
+# Date : 2023-09-18
+- hosts: all
+- name: "Test Cloudflare DNS connectivity (IPv4)"
+  import_playbook: "ping_host_multi.yml"
+  vars:
+    targets:
+      - "1.1.1.1"
+      - "1.0.0.1"
+
+

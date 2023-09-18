@@ -1,0 +1,15 @@
+---
+# tasks file for ping_host
+# ping an host
+- name: "Ping the host {{ host }}"
+  shell: "{{ ping_command }} {{ host }}"
+  register: command_output
+  ignore_errors: yes
+  no_log: true
+  changed_when: false
+
+- name: Ping Success
+  debug:
+    msg: "PING SUCCESS"
+  when: command_output.rc == 0
+

@@ -1,9 +1,9 @@
 ---
-# Check that hosts in the inventory are alive
+# Show the host ip
 # Author: David HEURTEVENT
-# Date : 2023-09-17
+# Date : 2023-09-18
 - hosts: all
   collections:
     - fruafr.networking
   roles:
-    - ansible_ping
+    - host_ip

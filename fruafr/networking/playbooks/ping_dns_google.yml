@@ -1,0 +1,13 @@
+---
+# Ping Google DNS servers (IPv4)
+# Author: David HEURTEVENT
+# Date : 2023-09-18
+- hosts: all
+- name: "Test Google DNS connectivity (IPv4)"
+  import_playbook: "ping_host_multi.yml"
+  vars:
+    targets:
+      - "8.8.8.8"
+      - "8.8.4.4"
+
+

@@ -1,0 +1,5 @@
+---
+# tasks file for host_ip
+- name: Show host's ip
+  debug:
+    msg: "{{ ansible_ssh_host }}"

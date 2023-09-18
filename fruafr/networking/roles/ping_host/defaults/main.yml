@@ -1,0 +1,4 @@
+---
+# defaults file for ping_host
+host: 127.0.0.1
+ping_command: "ping -c 1 -q -W 1"
