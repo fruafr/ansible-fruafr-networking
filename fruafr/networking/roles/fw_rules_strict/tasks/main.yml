@@ -1,6 +1,8 @@
 ---
 # tasks file for fw_rules_strict
 
+# SSH must have been authorized prior
+
 # Debian
 - block:
   #use ufw
@@ -11,11 +13,6 @@
     register: ufw_started
 
   - block:
-    #sudo ufw allow ssh
-    - name: UFW - SSH - ufw allow ssh
-      ufw:
-        rule: allow
-        name: OpenSSH
 
     #sudo ufw deny incoming
     - name: UFW - ufw deny incoming
