@@ -1,5 +1,5 @@
 ---
-# tasks file for fw_rules_ntp_server
+# tasks file for fw_rules_snmp_agent
 
 # Debian
 - block:
@@ -11,13 +11,13 @@
       state: enabled
     register: ufw_started
 
-  #sudo ufw allow 123/udp
-  - name: UFW - NTP server - ufw allow 123/udp
+  #sudo ufw allow 161/udp
+  - name: "UFW - Allow 161/udp - ufw allow 161/udp"
     ufw:
       rule: allow
-      port: '123'
+      port: '161'
       proto: udp
-      comment: 'NTP'
+      comment: 'SNMP'
     when: ufw_started is succeeded
 
   #To check status of UFW

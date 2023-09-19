@@ -1,0 +1,10 @@
+---
+# Firewall - SNMP agent
+# Author: David HEURTEVENT
+# Date : 2023-09-19
+- hosts: all
+  become: true
+  collections:
+    - fruafr.networking
+  roles:
+    - fw_rules_snmp_agent

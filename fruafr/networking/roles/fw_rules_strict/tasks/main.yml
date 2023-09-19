@@ -4,56 +4,60 @@
 # Debian
 - block:
   #use ufw
-  #sudo ufw allow ssh
-  - name: UFW - SSH - ufw allow ssh
-    ufw:
-      rule: allow
-      name: OpenSSH
-  
-  #sudo ufw allow 68
-  - name: UFW - DHCP - ufw allow 68
-    ufw:
-      rule: allow
-      port: '68'
-      proto: udp
-      comment: DHCP
-    when: ipv4|bool is true
-
-  #sudo ufw allow 546
-  - name: UFW - DHCPv6 - ufw allow 546
-    ufw:
-      rule: allow
-      port: '546'
-      proto: udp
-      comment: DHCPv6
-    when: ipv6|bool is true
-
-  #sudo ufw deny incoming
-  - name: UFW - ufw deny incoming
-    ufw:
-      direction: incoming
-      proto: any
-      policy: deny
-
-  #sudo ufw allow outgoing
-  - name: UFW - ufw allow outgoing
-    ufw:
-      direction: outgoing
-      proto: any
-      policy: allow
-
-  #sudo ufw allow in on lo
-  - name: UFW - Allow incoming localhost - ufw allow in on lo
-    ufw:
-      direction: incoming
-      proto: any
-      policy: allow
-      interface: lo
-
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
     ufw:
       state: enabled
+    register: ufw_started
+
+  - block:
+    #sudo ufw allow ssh
+    - name: UFW - SSH - ufw allow ssh
+      ufw:
+        rule: allow
+        name: OpenSSH
+
+    #sudo ufw allow 68
+    - name: UFW - DHCP - ufw allow 68
+      ufw:
+        rule: allow
+        port: '68'
+        proto: udp
+        comment: DHCP
+      when: ipv4|bool is true
+
+    #sudo ufw allow 546
+    - name: UFW - DHCPv6 - ufw allow 546
+      ufw:
+        rule: allow
+        port: '546'
+        proto: udp
+        comment: DHCPv6
+      when: ipv6|bool is true
+
+    #sudo ufw deny incoming
+    - name: UFW - ufw deny incoming
+      ufw:
+        direction: incoming
+        proto: any
+        policy: deny
+
+    #sudo ufw allow outgoing
+    - name: UFW - ufw allow outgoing
+      ufw:
+        direction: outgoing
+        proto: any
+        policy: allow
+
+    #sudo ufw allow in on lo
+    - name: UFW - Allow incoming localhost - ufw allow in on lo
+      ufw:
+        direction: incoming
+        proto: any
+        policy: allow
+        interface: lo
+
+    when: ufw_started is succeeded
 
   #To check status of UFW
   #sudo ufw status

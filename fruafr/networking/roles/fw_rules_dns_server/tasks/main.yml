@@ -5,25 +5,30 @@
 - block:
   #use ufw
 
-  #sudo ufw allow dns
-  - name: UFW - DNS Server - ufw allow dns
-    ufw:
-      rule: allow
-      port: '53'
-      comment: DNS
-
-#sudo ufw allow 953
-  - name: UFW - DNS Server - ufw allow 953
-    ufw:
-      rule: allow
-      port: '953'
-      proto: any
-      comment: DNS
-
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
     ufw:
       state: enabled
+    register: ufw_started
+
+  - block:
+
+    #sudo ufw allow dns
+    - name: UFW - DNS Server - ufw allow dns
+      ufw:
+        rule: allow
+        port: '53'
+        comment: DNS
+
+    #sudo ufw allow 953
+    - name: UFW - DNS Server - ufw allow 953
+      ufw:
+        rule: allow
+        port: '953'
+        proto: any
+        comment: DNS
+    
+    when: ufw_started is succeeded
 
   #To check status of UFW
   #sudo ufw status
