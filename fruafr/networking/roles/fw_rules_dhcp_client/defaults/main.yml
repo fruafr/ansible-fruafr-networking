@@ -1,0 +1,4 @@
+---
+# default file for fw_rules_dhcp_client
+ipv4: true
+ipv6: true

@@ -1,0 +1,37 @@
+---
+# tasks file for fw_rules_dhcp_client
+
+# Debian
+- block:
+  #use ufw
+  #sudo ufw enable
+  - name: UFW - Ensure UFW is enabled
+    ufw:
+      state: enabled
+    register: ufw_started
+
+  - block:
+    #sudo ufw allow 68
+    - name: UFW - DHCP - ufw allow 68
+      ufw:
+        rule: allow
+        port: '68'
+        proto: udp
+        comment: 'DHCP Client'
+      when: ipv4|bool is true
+
+    #sudo ufw allow 546
+    - name: UFW - DHCPv6 - ufw allow 546
+      ufw:
+        rule: allow
+        port: '546'
+        proto: udp
+        comment: 'DHCPv6 Client'
+      when: ipv6|bool is true
+
+    when: ufw_started is succeeded
+
+  #To check status of UFW
+  #sudo ufw status
+  #sudo ufw status verbose
+  when: ansible_os_family == 'Debian'

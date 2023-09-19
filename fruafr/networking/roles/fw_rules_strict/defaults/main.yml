@@ -1,4 +1,0 @@
----
-# default file for fw_rules_strict
-ipv4: true
-ipv6: true
