@@ -20,7 +20,4 @@
       comment: 'NTP'
     when: ufw_started is succeeded
 
-  #To check status of UFW
-  #sudo ufw status
-  #sudo ufw status verbose
   when: ansible_os_family == 'Debian'

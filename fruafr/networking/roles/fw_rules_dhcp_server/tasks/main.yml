@@ -1,5 +1,5 @@
 ---
-# tasks file for fw_rules_dhcp_client
+# tasks file for fw_rules_dhcp_server
 
 # Debian
 - block:
@@ -11,22 +11,22 @@
     register: ufw_started
 
   - block:
-    #sudo ufw allow 68
-    - name: UFW - DHCP - ufw allow 68
+    #sudo ufw allow 67
+    - name: UFW - DHCP - ufw allow 67
       ufw:
         rule: allow
-        port: '68'
+        port: '67'
         proto: udp
-        comment: 'DHCP Client'
+        comment: 'DHCP Server'
       when: ipv4|bool is true
 
-    #sudo ufw allow 546
-    - name: UFW - DHCPv6 - ufw allow 546
+    #sudo ufw allow 547
+    - name: UFW - DHCPv6 - ufw allow 547
       ufw:
         rule: allow
-        port: '546'
+        port: '547'
         proto: udp
-        comment: 'DHCPv6 Client'
+        comment: 'DHCPv6 Server'
       when: ipv6|bool is true
 
     when: ufw_started is succeeded

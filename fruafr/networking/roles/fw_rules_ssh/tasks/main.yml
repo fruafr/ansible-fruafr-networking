@@ -1,5 +1,5 @@
 ---
-# tasks file for fw_rules_dhcp_client
+# tasks file for fw_rules_ssh
 
 # Debian
 - block:
@@ -29,7 +29,4 @@
 
     when: ufw_started is succeeded
 
-  #To check status of UFW
-  #sudo ufw status
-  #sudo ufw status verbose
   when: ansible_os_family == 'Debian'

@@ -1,3 +1,3 @@
 ---
-# default file for fw_rules_dhcp_client
+# defaults file for fw_rules_ssh
 ssh_port: 22

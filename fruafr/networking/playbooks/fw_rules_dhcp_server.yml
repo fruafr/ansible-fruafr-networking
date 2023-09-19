@@ -1,5 +1,5 @@
 ---
-# Firewall - SSH rules
+# Firewall - DHCP Server rules
 # Author: David HEURTEVENT
 # Date : 2023-09-19
 - hosts: all
@@ -7,4 +7,4 @@
   collections:
     - fruafr.networking
   roles:
-    - fw_rules_ssh
+    - fw_rules_dhcp_server
