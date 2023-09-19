@@ -16,7 +16,7 @@
       ufw:
         rule: allow
         name: OpenSSH
-      when: "{{ ssh_port | int }} == 22"
+      when: 'ssh_port|int == 22'
 
     #sudo ufw allow [ssh_port]
     - name: UFW - SSH - ufw allow [ssh_port] on non standard port
@@ -25,7 +25,7 @@
         port: "{{ ssh_port | int }}"
         proto: tcp
         comment: 'SSH'
-      when: "{{ ssh_port | int }} != 22"
+      when: 'ssh_port|int != 22'
 
     when: ufw_started is succeeded
 
