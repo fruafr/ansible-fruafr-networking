@@ -9,7 +9,7 @@
       prompt: "Enter the new hostname"
     register: hostname_prompt
   - set_fact: 
-      hostname : "{{ hostname_prompt.user_input }}"
+      hostname: "{{ hostname_prompt.user_input }}"
   when: hostname is not defined
 
 - block:
@@ -18,7 +18,7 @@
       prompt: "Enter the new fully-qualified domain name"
     register: fqdn_prompt
   - set_fact: 
-      fqdn : "{{ fqdn_prompt.user_input }}"
+      fqdn: "{{ fqdn_prompt.user_input }}"
   when: fqdn is not defined
 
 - block:

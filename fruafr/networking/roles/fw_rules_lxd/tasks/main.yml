@@ -1,10 +1,10 @@
 ---
 # (c) Copyright: David HEURTEVENT, 2023
 # License: GPL 3.0
-# tasks file for fw_rules_cockpit
+# tasks file for fw_rules_lxd
 
-# Firewall - Cockpit (Web UI) rules
-# https://cockpit-project.org/
+# Firewall - Rules for LXC/LXD
+# https://documentation.ubuntu.com/lxd/en/latest/howto/server_configure/
 
 # Debian
 - block:
@@ -16,12 +16,12 @@
     register: ufw_started
 
   - block:
-    #sudo ufw allow 9090/tcp
-    - name: UFW - Cockpit - ufw allow 9090/tcp
+    #sudo ufw allow 8443/tcp
+    - name: "UFW - LXD - Allow 8443/tcp - ufw allow 8443/tcp"
       ufw:
         rule: allow
-        port: '9090'
+        port: '8443'
         proto: tcp
-        comment: Cockpit
+        comment: LXD
     when: ufw_started is succeeded
   when: ansible_os_family == 'Debian'
