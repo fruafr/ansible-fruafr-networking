@@ -1,0 +1,11 @@
+---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
+# Firewall - Cockpit (Web UI) rules
+# https://cockpit-project.org/
+- hosts: all
+  become: true
+  collections:
+    - fruafr.networking
+  roles:
+    - fw_rules_cockpit

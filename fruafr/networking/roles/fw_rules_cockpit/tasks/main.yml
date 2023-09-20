@@ -1,0 +1,28 @@
+---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
+# tasks file for fw_rules_cockpit
+
+# Firewall - Cockpit (Web UI) rules
+# https://cockpit-project.org/
+
+# Debian
+- block:
+  #use ufw
+  #sudo ufw enable
+  - name: UFW - Ensure UFW is enabled
+    ufw:
+      state: enabled
+    register: ufw_started
+
+  - block:
+    #sudo ufw allow 9090/tcp
+    - name: UFW - Cockpit - ufw allow 9090/tcp
+      ufw:
+        rule: allow
+        port: '9090'
+        proto: tcp
+        comment: Cockpit
+      when: ufw_started is succeeded
+    when: ufw_started is succeeded
+  when: ansible_os_family == 'Debian'
