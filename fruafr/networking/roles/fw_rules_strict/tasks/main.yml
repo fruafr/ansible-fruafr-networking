@@ -1,7 +1,11 @@
 ---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
 # tasks file for fw_rules_strict
 
-# SSH must have been authorized prior
+# Firewall - Strict rules
+
+# SSH must have been authorized prior else your SSH connections will be impossible.
 
 # Debian
 - block:

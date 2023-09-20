@@ -1,4 +1,6 @@
 ---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
 # display the localhost ip addresses
 - hosts: localhost
   tasks:

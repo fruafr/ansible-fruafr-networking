@@ -1,4 +1,6 @@
 ---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
 # defaults file for ping_host_multi
 ping_command: "ping -c 1 -q -W 1"
 targets:

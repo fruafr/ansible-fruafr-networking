@@ -1,4 +1,7 @@
 ---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
 # tasks file for ansible_ping
+# Check that hosts in the inventory are alive
 - name: "Check that ansible is reachable on target machine"
   ansible.builtin.ping:

@@ -1,5 +1,9 @@
 ---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
 # tasks file for fw_rules_ssh
+
+# Firewall - SSH rules
 
 # Debian
 - block:

@@ -1,4 +1,6 @@
 ---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
 # defaults file for fw_rules_dhcp_client
 ipv4: true
 ipv6: true

@@ -1,7 +1,7 @@
 ---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
 # Ping Cloudflare DNS servers (IPv4)
-# Author: David HEURTEVENT
-# Date : 2023-09-18
 - hosts: all
 - name: "Test Cloudflare DNS connectivity (IPv4)"
   import_playbook: "ping_host_multi.yml"
