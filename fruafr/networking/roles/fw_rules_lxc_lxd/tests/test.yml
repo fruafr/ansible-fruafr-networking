@@ -4,4 +4,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - fw_rules_lxd
+    - fw_rules_lxc_lxd
