@@ -8,4 +8,4 @@
   collections:
     - fruafr.networking
   roles:
-    - fw_rules_lxd
+    - fw_rules_lxc_lxd
