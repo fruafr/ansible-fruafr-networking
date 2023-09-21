@@ -37,7 +37,7 @@
     replace: 
       path: "{{ snmp_config_file }}"
       regexp: '(^agentaddress\s)(.*)$'
-      replace: "\\1 {{ agentaddress | regex_escape() }}"
+      replace: "\\1 {{ agentaddress }}"
     register: agentaddress_set 
     when: agentaddress is defined
 
