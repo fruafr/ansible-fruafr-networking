@@ -23,6 +23,14 @@
     replace: "\\1 {{ sysContact }}"
   when: sysContact is defined
 
+- name: Replace sysName
+  become: true
+  replace: 
+    path: "{{ snmp_config_file }}"
+    regexp: '(^sysName\s)(.*)$'
+    replace: "\\1 {{ sysName }}"
+  when: sysName is defined
+
 - block:
   - name: Replace agentaddress
     become: true
