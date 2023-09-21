@@ -31,6 +31,13 @@
     replace: "\\1 {{ sysName }}"
   when: sysName is defined
 
+- name: sysName - line
+  become: true
+  ansible.builtin.lineinfile:
+    path: '/etc/snmp/snmpd.conf'
+    state: present
+    line: "sysName {{ sysName}}"
+
 - block:
   - name: Replace agentaddress
     become: true
