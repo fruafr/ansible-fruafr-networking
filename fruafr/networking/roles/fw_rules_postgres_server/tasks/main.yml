@@ -1,0 +1,27 @@
+---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
+# tasks file for fw_rules_postgres_server
+
+# Firewall - rules for Postgresql Server
+
+# Debian
+- block:
+  #use ufw
+  
+  #sudo ufw enable
+  - name: UFW - Ensure UFW is enabled
+    ufw:
+      state: enabled
+    register: ufw_started
+
+  #sudo ufw allow 5432/tcp
+  - name: UFW - Postgres server - ufw allow 5432/tcp
+    ufw:
+      rule: allow
+      port: '5432'
+      proto: tcp
+      comment: 'POSTGRES'
+    when: ufw_started is succeeded
+
+  when: ansible_os_family == 'Debian'
