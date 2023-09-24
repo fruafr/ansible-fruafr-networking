@@ -1,0 +1,25 @@
+---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
+# tasks file for fw_rules_forward
+
+# Firewall - Rules to allow forwarding
+
+# Debian
+- block:
+  #use ufw
+  #sudo ufw enable
+  - name: UFW - Ensure UFW is enabled
+    ufw:
+      state: enabled
+    register: ufw_started
+
+  - block:
+    #sudo ufw default allow forward
+    - name: "UFW - LXD - Allow forward by default"
+      ufw:
+        direction: forward
+        proto: any
+        policy: allow
+    when: ufw_started is succeeded
+  when: ansible_os_family == 'Debian'
