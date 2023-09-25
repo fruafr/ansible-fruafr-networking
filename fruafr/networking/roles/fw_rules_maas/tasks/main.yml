@@ -1,0 +1,109 @@
+---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
+# tasks file for fw_rules_maas
+
+# Firewall - Rules for Canonical MAAS
+# https://maas.io/docs/how-to-improve-maas-security
+
+# Debian
+- block:
+  #use ufw
+  
+  #sudo ufw enable
+  - name: UFW - Ensure UFW is enabled
+    ufw:
+      state: enabled
+    register: ufw_started
+
+  #sudo ufw allow 5240
+  - name: "UFW - Allow 5240 - ufw allow 5240"
+    ufw:
+      rule: allow
+      port: '5240'
+      comment: 'MAAS Region controller HTTP communication'
+    when: ufw_started is succeeded
+  
+  #sudo ufw allow 5248
+  - name: "UFW - Allow 5248 - ufw allow 5248"
+    ufw:
+      rule: allow
+      port: '5248'
+      comment: 'MAAS Rack controller HTTP communication'
+    when: ufw_started is succeeded
+  #sudo ufw allow 5241:5247/tcp
+  - name: "UFW - Allow 5241:5247/tcp - allow 5241:5247/tcp"
+    ufw:
+      rule: allow
+      port: '5241:5247'
+      proto: tcp
+      comment: 'MAAS internal services'
+    when: ufw_started is succeeded
+  #sudo ufw allow 5241:5247/udp
+  - name: "UFW - Allow 5241:5247/udp - ufw allow 5241:5247/udp"
+    ufw:
+      rule: allow
+      port: '5241:5247'
+      proto: udp
+      comment: 'MAAS internal services'
+    when: ufw_started is succeeded
+  #sudo ufw allow 5250:5270/tcp
+  - name: "UFW - Allow 5250:5270/tcp - ufw allow 5250:5270/tcp"
+    ufw:
+      rule: allow
+      port: '5250:5270'
+      proto: tcp
+      comment: 'MAAS region workers (RPC)'
+    when: ufw_started is succeeded
+  #sudo ufw allow 5250:5270/udp
+  - name: "UFW - Allow 5250:5270/udp - ufw allow 5250:5270/udp"
+    ufw:
+      rule: allow
+      port: '5250:5270'
+      proto: udp
+      comment: 'MAAS region workers (RPC)'
+## Services
+  #sudo ufw allow 53/udp
+  - name: "UFW - Allow 53/udp - ufw allow 53/udp"
+    ufw:
+      rule: allow
+      port: '53'
+      proto: udp
+      comment: 'DNS'
+  #sudo ufw allow 53/tcp
+  - name: "UFW - Allow 53/tcp - ufw allow 53/tcp"
+    ufw:
+      rule: allow
+      port: '53'
+      proto: tcp
+      comment: 'DNS'
+  #sudo ufw allow 67/udp
+  - name: "UFW - Allow 67/udp - ufw allow 67/udp"
+    ufw:
+      rule: allow
+      port: '67'
+      proto: udp
+      comment: 'DHCPv4'
+  #sudo ufw allow 69/udp
+  - name: "UFW - Allow 69/udp - ufw allow 69/udp"
+    ufw:
+      rule: allow
+      port: '69'
+      proto: udp
+      comment: 'TFTP'
+  #sudo ufw allow 123/udp
+  - name: "UFW - Allow 123/udp - ufw allow 123/udp"
+    ufw:
+      rule: allow
+      port: '123'
+      proto: udp
+      comment: 'NTP'
+  #sudo ufw allow 8000/tcp
+  - name: "UFW - Allow 8000/tcp - ufw allow 8000/tcp"
+    ufw:
+      rule: allow
+      port: '8000'
+      proto: tcp
+      comment: 'SQUID'
+    when: ufw_started is succeeded
+  when: ansible_os_family == 'Debian'

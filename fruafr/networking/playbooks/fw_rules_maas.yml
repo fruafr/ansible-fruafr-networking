@@ -1,0 +1,12 @@
+---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
+# Firewall - Rules for Canonical MAAS
+# https://maas.io/docs/how-to-improve-maas-security
+
+- hosts: all
+  become: true
+  collections:
+    - fruafr.networking
+  roles:
+    - fw_rules_maas
