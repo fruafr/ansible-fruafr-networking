@@ -6,7 +6,7 @@
 # Debian
 - block:
   # sudo apt-get install [packages]
-    - name: 'DEBIAN - Install network administration / forensic tools : tcpdump, nmap, net-tools, bind9-dnsutils, wireshark, netcat, hping3'
+    - name: 'DEBIAN - Install network administration / forensic tools : tcpdump, nmap, net-tools, bind9-dnsutils, wireshark, netcat, hping3, traceroute, whois'
       become: true
       ansible.builtin.apt:
         pkg:
@@ -17,5 +17,7 @@
           - wireshark
           - netcat
           - hping3
+          - traceroute
+          - whois
         state: latest
   when: ansible_os_family == 'Debian'
