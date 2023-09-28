@@ -16,20 +16,20 @@
       state: enabled
     register: ufw_started
 
+  #sudo ufw allow 5239/tcp
+  - name: "UFW - Allow 5239/tcp - ufw allow 5239/tcp"
+    ufw:
+      rule: allow
+      port: '5239'
+      proto: tcp
+      comment: 'MAAS Regiond'
+    when: ufw_started is succeeded
   #sudo ufw allow 5240
   - name: "UFW - Allow 5240 - ufw allow 5240"
     ufw:
       rule: allow
       port: '5240'
       comment: 'MAAS Region controller HTTP communication'
-    when: ufw_started is succeeded
-  
-  #sudo ufw allow 5248
-  - name: "UFW - Allow 5248 - ufw allow 5248"
-    ufw:
-      rule: allow
-      port: '5248'
-      comment: 'MAAS Rack controller HTTP communication'
     when: ufw_started is succeeded
   #sudo ufw allow 5241:5247/tcp
   - name: "UFW - Allow 5241:5247/tcp - allow 5241:5247/tcp"
@@ -46,6 +46,21 @@
       port: '5241:5247'
       proto: udp
       comment: 'MAAS internal services'
+    when: ufw_started is succeeded
+  #sudo ufw allow 5248
+  - name: "UFW - Allow 5248 - ufw allow 5248"
+    ufw:
+      rule: allow
+      port: '5248'
+      comment: 'MAAS Rack controller HTTP communication'
+    when: ufw_started is succeeded
+  #sudo ufw allow 5249
+  - name: "UFW - Allow 5249/tcp - ufw allow 5249/tcp"
+    ufw:
+      rule: allow
+      port: '5249'
+      proto: tcp
+      comment: 'MAAS Rackd'
     when: ufw_started is succeeded
   #sudo ufw allow 5250:5270/tcp
   - name: "UFW - Allow 5250:5270/tcp - ufw allow 5250:5270/tcp"
@@ -98,6 +113,27 @@
       port: '123'
       proto: udp
       comment: 'NTP'
+  #sudo ufw allow 3128/tcp
+  - name: "UFW - Allow 3128/tcp - ufw allow 3128/tcp"
+    ufw:
+      rule: allow
+      port: '3138'
+      proto: tcp
+      comment: 'Proxy HTTP' 
+  #sudo ufw allow 3260/tcp
+  - name: "UFW - Allow 3260/tcp - ufw allow 3260/tcp"
+    ufw:
+      rule: allow
+      port: '3260'
+      proto: tcp
+      comment: 'iscsi' 
+  #sudo ufw allow 7911/tcp
+  - name: "UFW - Allow 7911/tcp - ufw allow 7911/tcp"
+    ufw:
+      rule: allow
+      port: '7911'
+      proto: tcp
+      comment: 'MAAS' 
   #sudo ufw allow 8000/tcp
   - name: "UFW - Allow 8000/tcp - ufw allow 8000/tcp"
     ufw:
