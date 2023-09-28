@@ -32,14 +32,6 @@
         proto: any
         policy: allow
 
-    #sudo ufw allow in on lo
-    - name: UFW - Allow incoming localhost - ufw allow in on lo
-      ufw:
-        direction: incoming
-        proto: any
-        policy: allow
-        interface: lo
-
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
