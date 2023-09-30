@@ -1,0 +1,36 @@
+---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
+# tasks file for fw_rules_syslog
+
+# Firewall - Syslog
+
+# Debian
+- block:
+  #use ufw
+  
+  #sudo ufw enable
+  - name: UFW - Ensure UFW is enabled
+    ufw:
+      state: enabled
+    register: ufw_started
+
+  #sudo ufw allow 514/udp
+  - name: "UFW - Allow 514/udp - ufw allow 514/udp"
+    ufw:
+      rule: allow
+      port: '514'
+      proto: udp
+      comment: 'Syslog UDP'
+    when: ufw_started is succeeded
+
+  #sudo ufw allow 514/tcp
+  - name: "UFW - Allow 514/tcp - ufw allow 514/tcp"
+    ufw:
+      rule: allow
+      port: '514'
+      proto: tcp
+      comment: 'Syslog TCP'
+    when: ufw_started is succeeded
+
+  when: ansible_os_family == 'Debian'
