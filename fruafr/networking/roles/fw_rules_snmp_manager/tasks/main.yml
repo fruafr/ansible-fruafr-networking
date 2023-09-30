@@ -22,15 +22,32 @@
         rule: allow
         port: '161'
         proto: udp
-        comment: 'SNMP'
+        comment: 'SNMP Agent UDP'
+
+    #sudo ufw allow 161/tcp
+    - name: "UFW - Allow 161/tcp - ufw allow 161/tcp"
+      ufw:
+        rule: allow
+        port: '161'
+        proto: tcp
+        comment: 'SNMP Agent TCP'
 
     #sudo ufw allow 162/udp
     - name: "UFW - Allow 162/udp - ufw allow 162/udp"
       ufw:
         rule: allow
-        port: '161'
+        port: '162'
         proto: udp
-        comment: 'SNMP Trap'
+        comment: 'SNMP Trap UDP'
+
+    #sudo ufw allow 162/tcp
+    - name: "UFW - Allow 162/tcp - ufw allow 162/tcp"
+      ufw:
+        rule: allow
+        port: '162'
+        proto: tcp
+        comment: 'SNMP Trap TCP'
+
 
     when: ufw_started is succeeded
 
