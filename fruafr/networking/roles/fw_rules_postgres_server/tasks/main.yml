@@ -11,12 +11,14 @@
   
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
 
   #sudo ufw allow 5432/tcp
   - name: UFW - Postgres server - ufw allow 5432/tcp
+    become: true
     ufw:
       rule: allow
       port: '5432'
@@ -25,3 +27,26 @@
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
+
+#RedHat
+- block:
+  #use firewalld
+  - block:
+    - name: Firewalld - Allow Postgresql service
+      become: true
+      ansible.posix.firewalld:
+        service: postgresql
+        permanent: true
+        state: enabled
+
+    #reload
+    - name: FIREWALLD - reloaded
+      become: true
+      ansible.builtin.service:
+        service:
+          name: firewalld
+          state: reloaded    
+
+  when: ansible_os_family == 'RedHat'
+
+

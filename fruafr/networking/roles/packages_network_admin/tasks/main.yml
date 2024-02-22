@@ -21,3 +21,23 @@
           - whois
         state: latest
   when: ansible_os_family == 'Debian'
+
+#RedHat
+- block:
+  #sudo dnf check-update && sudo dnf install -y [package]
+  #no bind9-dnsutils equivalent as dig nslookup and nsupdate already installed by default
+  - name: "DNF check-update and install firewalld"
+    become: true
+    ansible.builtin.dnf:
+      name:
+        - tcpdump
+        - nmap
+        - net-tools
+        - wireshark
+        - netcat
+        - hping3
+        - traceroute
+        - whois
+      state: present
+      update_cache: true  
+  when: ansible_os_family == 'RedHat'

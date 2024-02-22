@@ -1,0 +1,49 @@
+---
+# (c) Copyright: David HEURTEVENT, 2023
+# License: GPL 3.0
+
+# tasks file for packages_ufw
+
+# Install Firewall - UFW
+  
+#RedHat
+- block:
+  #sudo dnf check-update && sudo dnf install -y [package]
+  - name: "DNF check-update and install firewalld"
+    become: true
+    ansible.builtin.dnf:
+      name:
+        - firewalld
+      state: present
+      update_cache: true  
+
+  #when installed
+  - block:
+    #sudo systemctl enable --now firewalld
+    - name: SERVICE - Ensure firewalld service enabled
+      become: true
+      service:
+        name: firewalld
+        enabled: yes
+      register: firewalld_enabled
+
+    #sudo systemctl start firewalld
+    - name: SERVICE - Ensure firewalld service started
+      become: true
+      service:
+        name: firewalld
+        state: started
+      when: firewalld_enabled
+    when: firewalld_installed is defined
+
+  when: ansible_os_family == 'RedHat'
+
+# Debian
+- block:
+  #use ufw
+
+  - name: "FIREWALLD - Not implemented - use ufw instead"
+    debug:  
+      msg: "Not implemented for Debian"
+
+  when: ansible_os_family == 'Debian'

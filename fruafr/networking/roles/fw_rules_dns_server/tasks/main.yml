@@ -11,6 +11,7 @@
 
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
@@ -19,6 +20,7 @@
 
     #sudo ufw allow dns
     - name: UFW - DNS Server - ufw allow dns
+      become: true
       ufw:
         rule: allow
         port: '53'
@@ -26,6 +28,7 @@
 
     #sudo ufw allow 953
     - name: UFW - DNS Server - ufw allow 953
+      become: true
       ufw:
         rule: allow
         port: '953'
@@ -35,3 +38,33 @@
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
+
+# RedHat
+- block:
+  #use firewalld
+
+  - block:
+    - name: Firewalld - DNS Server
+      become: true
+      ansible.posix.firewalld:
+        service: dns
+        permanent: true
+        state: enabled
+
+  - block:
+    - name: Firewalld - DNS Server - dns-over-tls
+      become: true
+      ansible.posix.firewalld:
+        service: dns-over-tls
+        permanent: true
+        state: enabled
+
+    #reload
+    - name: FIREWALLD - reloaded
+      become: true
+      ansible.builtin.service:
+        service:
+          name: firewalld
+          state: reloaded        
+
+  when: ansible_os_family == 'RedHat'

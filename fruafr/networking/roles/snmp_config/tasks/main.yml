@@ -10,16 +10,32 @@
   become: true
   replace: 
     path: "{{ snmp_config_file }}"
-    regexp: '(^sysLocation\s)(.*)$'
+    regexp: "^(sysLocation)(.*)$"
     replace: "\\1 {{ sysLocation }}"
     backup: yes
+  when: sysLocation is defined
+
+- name: Replace syslocation
+  become: true
+  replace: 
+    path: "{{ snmp_config_file }}"
+    regexp: "^(syslocation)(.*)$"
+    replace: "\\1 {{ sysLocation }}"
   when: sysLocation is defined
 
 - name: Replace sysContact
   become: true
   replace: 
     path: "{{ snmp_config_file }}"
-    regexp: '(^sysContact\s)(.*)$'
+    regexp: "^(sysContact)(.*)$"
+    replace: "\\1 {{ sysContact }}"
+  when: sysContact is defined
+
+- name: Replace syscontact
+  become: true
+  replace: 
+    path: "{{ snmp_config_file }}"
+    regexp: "^(syscontact)(.*)$"
     replace: "\\1 {{ sysContact }}"
   when: sysContact is defined
 
@@ -27,23 +43,16 @@
   become: true
   replace: 
     path: "{{ snmp_config_file }}"
-    regexp: '(^sysName\s)(.*)$'
+    regexp: "^(sysName)(.*)$"
     replace: "\\1 {{ sysName }}"
   when: sysName is defined
-
-- name: sysName - line
-  become: true
-  ansible.builtin.lineinfile:
-    path: '/etc/snmp/snmpd.conf'
-    state: present
-    line: "sysName {{ sysName}}"
 
 - block:
   - name: Replace agentaddress
     become: true
     replace: 
       path: "{{ snmp_config_file }}"
-      regexp: '(^agentaddress\s)(.*)$'
+      regexp: "^(agentaddress)(.*)$"
       replace: "\\1 {{ agentaddress }}"
     register: agentaddress_set 
     when: agentaddress is defined
@@ -52,16 +61,64 @@
     become: true
     replace:
       path: "{{ snmp_config_file }}"
-      regexp: '(^agentaddress\s)(.*)$'
+      regexp: "^(agentaddress)(.*)$"
       replace: "\\1 {{ snmp_default_agentaddress }}"
     when: not (agentaddress is defined)
+
+  - name: sysLocation must be in file (Debian)
+    become: true
+    ansible.builtin.lineinfile:
+      path: "{{ snmp_config_file }}"
+      state: present
+      line: "sysLocation {{ sysLocation }}"
+    when: sysLocation is defined and ansible_os_family == 'Debian'
+
+  - name: syslocation must be in file (RedHat)
+    become: true
+    ansible.builtin.lineinfile:
+      path: "{{ snmp_config_file }}"
+      state: present
+      line: "syslocation {{ sysLocation }}"
+    when: sysLocation is defined and ansible_os_family == 'RedHat'
+
+  - name: sysContact must be in file (Debian)
+    become: true
+    ansible.builtin.lineinfile:
+      path: "{{ snmp_config_file }}"
+      state: present
+      line: "sysContact {{ sysContact }}"
+    when: sysContact is defined and ansible_os_family == 'Debian'
+
+  - name: syscontact must be in file (RedHat)
+    become: true
+    ansible.builtin.lineinfile:
+      path: "{{ snmp_config_file }}"
+      state: present
+      line: "syscontact {{ sysContact }}"
+    when: sysContact is defined and ansible_os_family == 'RedHat'
+
+  - name: sysName must be in file
+    become: true
+    ansible.builtin.lineinfile:
+      path: "{{ snmp_config_file }}"
+      state: present
+      line: "sysName {{ sysName }}"
+    when: sysName is defined
+
+  - name: agentaddress must be in file
+    become: true
+    ansible.builtin.lineinfile:
+      path: "{{ snmp_config_file }}"
+      state: present
+      line: "agentaddress {{ agentaddress }}"
+    when: agentaddress is defined
 
   #Add community to the new config file:
   #echo “rocommunity [rocommunitydetails]”>/etc/snmp/snmpd.conf
   - name: SNMPD - Add read only community 
     become: true
     ansible.builtin.lineinfile:
-      path: '/etc/snmp/snmpd.conf'
+      path: "{{ snmp_config_file }}"
       state: present
       line: "rocommunity {{ rocommunitydetails }}"
     when: rocommunitydetails is defined
@@ -69,17 +126,17 @@
   - name: SNMPD - Add read only community IPv6
     become: true
     ansible.builtin.lineinfile:
-      path: '/etc/snmp/snmpd.conf'
+      path: "{{ snmp_config_file }}"
       state: present
       line: "rocommunity6 {{ rocommunitydetails }}"
-    when: rocommunitydetails is defined
+    when: rocommunitydetails6 is defined
 
   #Add community to the new config file:
   #echo “rwcommunity [rwcommunitydetails]”>/etc/snmp/snmpd.conf
   - name: SNMPD - Add read write community 
     become: true
     ansible.builtin.lineinfile:
-      path: '/etc/snmp/snmpd.conf'
+      path: "{{ snmp_config_file }}"
       state: present
       line: "rwcommunity {{ rwcommunitydetails }}"
     when: rwcommunitydetails is defined
@@ -87,15 +144,14 @@
   - name: SNMPD - Add read write community IPv6
     become: true
     ansible.builtin.lineinfile:
-      path: '/etc/snmp/snmpd.conf'
+      path: "{{ snmp_config_file }}"
       state: present
       line: "rwcommunity6 {{ rwcommunitydetails }}"
-    when: rwcommunitydetails is defined
+    when: rwcommunitydetails6 is defined
 
 - name: SERVICE - Ensure snmpd service reloaded
   become: true
   service:
     name: snmpd
     state: reloaded
-
 

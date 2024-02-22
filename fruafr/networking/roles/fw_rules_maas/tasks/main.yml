@@ -12,12 +12,14 @@
   
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
 
   #sudo ufw allow 5239/tcp
   - name: "UFW - Allow 5239/tcp - ufw allow 5239/tcp"
+    become: true
     ufw:
       rule: allow
       port: '5239'
@@ -26,6 +28,7 @@
     when: ufw_started is succeeded
   #sudo ufw allow 5240
   - name: "UFW - Allow 5240 - ufw allow 5240"
+    become: true
     ufw:
       rule: allow
       port: '5240'
@@ -33,6 +36,7 @@
     when: ufw_started is succeeded
   #sudo ufw allow 5241:5247/tcp
   - name: "UFW - Allow 5241:5247/tcp - allow 5241:5247/tcp"
+    become: true
     ufw:
       rule: allow
       port: '5241:5247'
@@ -41,6 +45,7 @@
     when: ufw_started is succeeded
   #sudo ufw allow 5241:5247/udp
   - name: "UFW - Allow 5241:5247/udp - ufw allow 5241:5247/udp"
+    become: true
     ufw:
       rule: allow
       port: '5241:5247'
@@ -49,6 +54,7 @@
     when: ufw_started is succeeded
   #sudo ufw allow 5248
   - name: "UFW - Allow 5248 - ufw allow 5248"
+    become: true
     ufw:
       rule: allow
       port: '5248'
@@ -56,6 +62,7 @@
     when: ufw_started is succeeded
   #sudo ufw allow 5249
   - name: "UFW - Allow 5249/tcp - ufw allow 5249/tcp"
+    become: true
     ufw:
       rule: allow
       port: '5249'
@@ -64,6 +71,7 @@
     when: ufw_started is succeeded
   #sudo ufw allow 5250:5270/tcp
   - name: "UFW - Allow 5250:5270/tcp - ufw allow 5250:5270/tcp"
+    become: true
     ufw:
       rule: allow
       port: '5250:5270'
@@ -72,6 +80,7 @@
     when: ufw_started is succeeded
   #sudo ufw allow 5250:5270/udp
   - name: "UFW - Allow 5250:5270/udp - ufw allow 5250:5270/udp"
+    become: true
     ufw:
       rule: allow
       port: '5250:5270'
@@ -80,6 +89,7 @@
 ## Services
   #sudo ufw allow 53/udp
   - name: "UFW - Allow 53/udp - ufw allow 53/udp"
+    become: true
     ufw:
       rule: allow
       port: '53'
@@ -87,6 +97,7 @@
       comment: 'DNS'
   #sudo ufw allow 53/tcp
   - name: "UFW - Allow 53/tcp - ufw allow 53/tcp"
+    become: true
     ufw:
       rule: allow
       port: '53'
@@ -94,6 +105,7 @@
       comment: 'DNS'
   #sudo ufw allow 67/udp
   - name: "UFW - Allow 67/udp - ufw allow 67/udp"
+    become: true
     ufw:
       rule: allow
       port: '67'
@@ -101,6 +113,7 @@
       comment: 'DHCPv4'
   #sudo ufw allow 69/udp
   - name: "UFW - Allow 69/udp - ufw allow 69/udp"
+    become: true
     ufw:
       rule: allow
       port: '69'
@@ -108,6 +121,7 @@
       comment: 'TFTP'
   #sudo ufw allow 123/udp
   - name: "UFW - Allow 123/udp - ufw allow 123/udp"
+    become: true
     ufw:
       rule: allow
       port: '123'
@@ -115,6 +129,7 @@
       comment: 'NTP'
   #sudo ufw allow 3128/tcp
   - name: "UFW - Allow 3128/tcp - ufw allow 3128/tcp"
+    become: true
     ufw:
       rule: allow
       port: '3138'
@@ -122,6 +137,7 @@
       comment: 'Proxy HTTP' 
   #sudo ufw allow 3260/tcp
   - name: "UFW - Allow 3260/tcp - ufw allow 3260/tcp"
+    become: true
     ufw:
       rule: allow
       port: '3260'
@@ -129,6 +145,7 @@
       comment: 'iscsi' 
   #sudo ufw allow 7911/tcp
   - name: "UFW - Allow 7911/tcp - ufw allow 7911/tcp"
+    become: true
     ufw:
       rule: allow
       port: '7911'
@@ -136,6 +153,7 @@
       comment: 'MAAS' 
   #sudo ufw allow 8000/tcp
   - name: "UFW - Allow 8000/tcp - ufw allow 8000/tcp"
+    become: true
     ufw:
       rule: allow
       port: '8000'
@@ -143,3 +161,13 @@
       comment: 'SQUID'
     when: ufw_started is succeeded
   when: ansible_os_family == 'Debian'
+
+# RedHat
+- block:
+  #use firewalld
+
+  - name: "MAAS Firewall rules - Not implemented"
+    debug:  
+      msg: "Not implemented for RedHat"
+
+  when: ansible_os_family == 'RedHat'

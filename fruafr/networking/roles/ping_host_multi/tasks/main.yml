@@ -9,7 +9,7 @@
   shell: "{{ ping_command }} {{ item }}"
   loop: "{{ targets }}"
   register: command_output
-  ignore_errors: yes
+  ignore_errors: true
   no_log: true
   changed_when: false
 

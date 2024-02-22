@@ -17,27 +17,41 @@
   
   #sudo apt-get -y install ufw iptables
   - name: APT - install ufw iptables
+    become: true
     apt:
       pkg: 
         - iptables
         - ufw
       state: present
     register: ufw_installed
+
+  #when installed
+  - block:
+    #sudo systemctl enable --now ufw
+    - name: SERVICE - Ensure ufw service enabled
+      become: true
+      service:
+        name: ufw
+        enabled: yes
+      register: ufw_enabled
+
+    #sudo systemctl start ufw
+    - name: SERVICE - Ensure ufw service started
+      become: true
+      service:
+        name: ufw
+        state: started
+      when: ufw_enabled
+    when: uwf_installed is defined
+
   when: ansible_os_family == 'Debian'
 
-#when installed
+# RedHat
 - block:
-  #sudo systemctl enable --now ufw
-  - name: SERVICE - Ensure ufw service enabled
-    service:
-      name: ufw
-      enabled: yes
-    register: ufw_enabled
+  #use firewalld
 
-  #sudo systemctl start ufw
-  - name: SERVICE - Ensure ufw service started
-    service:
-      name: ufw
-      state: started
-    when: ufw_enabled
-  when: uwf_installed is defined
+  - name: "UFW - Not implemented - use firewalld instead"
+    debug:  
+      msg: "Not implemented for RedHat"
+
+  when: ansible_os_family == 'RedHat'

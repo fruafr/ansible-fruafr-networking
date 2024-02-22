@@ -10,6 +10,7 @@
   #use ufw
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
@@ -17,6 +18,7 @@
   - block:
     #sudo ufw allow 68
     - name: UFW - DHCP - ufw allow 68
+      become: true
       ufw:
         rule: allow
         port: '68'
@@ -26,6 +28,7 @@
 
     #sudo ufw allow 546
     - name: UFW - DHCPv6 - ufw allow 546
+      become: true
       ufw:
         rule: allow
         port: '546'
@@ -36,3 +39,36 @@
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
+
+# RedHat
+- block:
+  #use firewalld
+
+  - block:
+    #allow 68/udp
+    - name: FIREWALLD - DHCP Client - allow 68/udp
+      become: true
+      ansible.posix.firewalld:
+        port: "68/udp"
+        permanent: true
+        state: enabled
+      when: ipv4 |bool is true
+
+    #allow 546/udp
+    - name: FIREWALLD - DHCPv6 Client - allow 546/udp
+      become: true
+      ansible.posix.firewalld:
+        port: "546/udp"
+        permanent: true
+        state: enabled
+      when: ipv6|bool is true
+
+    #reload
+    - name: FIREWALLD - reloaded
+      become: true
+      ansible.builtin.service:
+        service:
+          name: firewalld
+          state: reloaded        
+
+  when: ansible_os_family == 'RedHat'

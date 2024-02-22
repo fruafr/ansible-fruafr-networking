@@ -11,12 +11,14 @@
   
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
 
   #sudo ufw allow 123/udp
   - name: UFW - NTP server - ufw allow 123/udp
+    become: true
     ufw:
       rule: allow
       port: '123'
@@ -25,3 +27,24 @@
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
+
+#RedHat
+- block:
+  #use firewalld
+  - block:
+    - name: Firewalld - Allow NTP service
+      become: true
+      ansible.posix.firewalld:
+        service: ntp
+        permanent: true
+        state: enabled
+
+    #reload
+    - name: FIREWALLD - reloaded
+      become: true
+      ansible.builtin.service:
+        service:
+          name: firewalld
+          state: reloaded    
+
+  when: ansible_os_family == 'RedHat'

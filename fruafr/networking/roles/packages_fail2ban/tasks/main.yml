@@ -21,6 +21,22 @@
     register: fail2ban_installed
   when: ansible_os_family == 'Debian'
 
+# RedHat
+- block:
+  #use firewalld
+
+  #sudo dnf check-update && sudo dnf install -y [package]
+  - name: "DNF check-update and install fail2ban fail2ban-firewalld"
+    become: true
+    ansible.builtin.dnf:
+      name:
+        - fail2ban
+        - fail2ban-firewalld
+      state: present
+      update_cache: true  
+
+  when: ansible_os_family == 'RedHat'
+
 - block:
   #sudo systemctl enable --now fail2ban
   - name: SERVICE - Ensure fail2ban service enabled

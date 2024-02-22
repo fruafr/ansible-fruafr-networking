@@ -11,6 +11,7 @@
   
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
@@ -18,6 +19,7 @@
   - block:
     #sudo ufw allow 161/udp
     - name: "UFW - Allow 161/udp - ufw allow 161/udp"
+      become: true
       ufw:
         rule: allow
         port: '161'
@@ -26,6 +28,7 @@
 
     #sudo ufw allow 161/tcp
     - name: "UFW - Allow 161/tcp - ufw allow 161/tcp"
+      become: true
       ufw:
         rule: allow
         port: '161'
@@ -34,6 +37,7 @@
 
     #sudo ufw allow 162/udp
     - name: "UFW - Allow 162/udp - ufw allow 162/udp"
+      become: true
       ufw:
         rule: allow
         port: '162'
@@ -42,6 +46,7 @@
 
     #sudo ufw allow 162/tcp
     - name: "UFW - Allow 162/tcp - ufw allow 162/tcp"
+      become: true
       ufw:
         rule: allow
         port: '162'
@@ -55,3 +60,67 @@
   #sudo ufw status
   #sudo ufw status verbose
   when: ansible_os_family == 'Debian'
+
+# RedHat
+- block:
+  #use firewalld
+
+  - block:
+    #allow 161/udp
+    - name: FIREWALLD - SNMP Agent - Allow 161/udp
+      become: true
+      ansible.posix.firewalld:
+        port: 161/udp
+        permanent: true
+        state: enabled
+
+    #allow 161/tcp
+    - name: FIREWALLD - SNMP Agent - Allow 161/tcp
+      become: true
+      ansible.posix.firewalld:
+        port: 161/tcp
+        permanent: true
+        state: enabled
+
+  - block:
+    - name: FIREWALLD - Allow snmp service
+      become: true
+      ansible.posix.firewalld:
+        service: snmp
+        permanent: true
+        state: enabled
+
+  - block:
+    - name: FIREWALLD - Allow snmp-trap service
+      become: true
+      ansible.posix.firewalld:
+        service: snmp-trap
+        permanent: true
+        state: enabled
+
+  - block:
+    #allow 162/udp
+    - name: FIREWALLD - SNMP Agent - Allow 162/udp
+      become: true
+      ansible.posix.firewalld:
+        port: 162/udp
+        permanent: true
+        state: enabled
+
+    #allow 162/tcp
+    - name: FIREWALLD - SNMP Agent - Allow 162/tcp
+      become: true
+      ansible.posix.firewalld:
+        port: 162/tcp
+        permanent: true
+        state: enabled
+
+    #reload
+    - name: FIREWALLD - reloaded
+      become: true
+      ansible.builtin.service:
+        service:
+          name: firewalld
+          state: reloaded        
+
+  when: ansible_os_family == 'RedHat'

@@ -12,6 +12,7 @@
   #use ufw
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
@@ -20,6 +21,7 @@
 
     #sudo ufw deny incoming
     - name: UFW - ufw deny incoming
+      become: true
       ufw:
         direction: incoming
         proto: any
@@ -27,6 +29,7 @@
 
     #sudo ufw allow outgoing
     - name: UFW - ufw allow outgoing
+      become: true
       ufw:
         direction: outgoing
         proto: any
@@ -35,3 +38,13 @@
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
+
+# RedHat
+- block:
+  #use firewalld
+
+  - name: "Strict rules - Not implemented"
+    debug:  
+      msg: "Not implemented for RedHat"
+
+  when: ansible_os_family == 'RedHat'

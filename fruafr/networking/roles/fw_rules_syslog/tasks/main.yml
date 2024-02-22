@@ -11,12 +11,14 @@
   
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
 
   #sudo ufw allow 514/udp
   - name: "UFW - Allow 514/udp - ufw allow 514/udp"
+    become: true
     ufw:
       rule: allow
       port: '514'
@@ -26,6 +28,7 @@
 
   #sudo ufw allow 514/tcp
   - name: "UFW - Allow 514/tcp - ufw allow 514/tcp"
+    become: true
     ufw:
       rule: allow
       port: '514'
@@ -34,3 +37,18 @@
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
+
+
+# RedHat
+- block:
+  #use firewalld
+
+  - block:
+    - name: FIREWALLD - Allow syslog service
+      become: true
+      ansible.posix.firewalld:
+        service: syslog
+        permanent: true
+        state: enabled
+
+  when: ansible_os_family == 'RedHat'

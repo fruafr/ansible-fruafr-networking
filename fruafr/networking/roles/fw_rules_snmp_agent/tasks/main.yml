@@ -11,12 +11,14 @@
   
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
 
   #sudo ufw allow 161/udp
-  - name: "UFW - Allow 161/udp - ufw allow 161/udp"
+  - name: "UFW - SNMP Agent - Allow 161/udp - ufw allow 161/udp"
+    become: true
     ufw:
       rule: allow
       port: '161'
@@ -25,7 +27,8 @@
     when: ufw_started is succeeded
 
   #sudo ufw allow 161/tcp
-  - name: "UFW - Allow 161/tcp - ufw allow 161/tcp"
+  - name: "UFW - SNMP Agent - Allow 161/tcp - ufw allow 161/tcp"
+    become: true
     ufw:
       rule: allow
       port: '161'
@@ -34,3 +37,42 @@
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
+
+# RedHat
+- block:
+  #use firewalld
+
+  - block:
+    #allow 161/udp
+    - name: FIREWALLD - SNMP Agent - Allow 161/udp
+      become: true
+      ansible.posix.firewalld:
+        port: 161/udp
+        permanent: true
+        state: enabled
+
+    #allow 161/tcp
+    - name: FIREWALLD - SNMP Agent - Allow 161/tcp
+      become: true
+      ansible.posix.firewalld:
+        port: 161/tcp
+        permanent: true
+        state: enabled
+
+  - block:
+    - name: FIREWALLD - Allow snmp service
+      become: true
+      ansible.posix.firewalld:
+        service: snmp
+        permanent: true
+        state: enabled
+
+    #reload
+    - name: FIREWALLD - reloaded
+      become: true
+      ansible.builtin.service:
+        service:
+          name: firewalld
+          state: reloaded        
+
+  when: ansible_os_family == 'RedHat'

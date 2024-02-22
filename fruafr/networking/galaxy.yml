@@ -21,7 +21,7 @@ authors:
 
 ### OPTIONAL but strongly recommended
 # A short summary description of the collection
-description: Ansible collection for networking tools
+description: Ansible collection for networking tools - Supports Debian and RedHat families
 
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'
@@ -34,7 +34,7 @@ license_file: ''
 
 # A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
 # requirements as 'namespace' and 'name'
-tags: ['Debian', 'Ubuntu', 'networking']
+tags: ['networking', 'Debian', 'Ubuntu', 'RedHat', 'rhel', 'AlmaLinux', 'Rocky', 'Fedora', 'OracleLinux', 'CentOS']
 
 # Collections that this collection requires to be installed for it to be usable. The key of the dict is the
 # collection label 'namespace.name'. The value is a version range

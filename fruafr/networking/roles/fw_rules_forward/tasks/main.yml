@@ -10,6 +10,7 @@
   #use ufw
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
@@ -17,9 +18,20 @@
   - block:
     #sudo ufw default allow forward
     - name: "UFW - LXD - Allow forward by default"
+      become: true
       ufw:
         direction: routed
         proto: any
         policy: allow
     when: ufw_started is succeeded
   when: ansible_os_family == 'Debian'
+
+# RedHat
+- block:
+  #use firewalld
+
+  - name: "Allow forward - Not implemented"
+    debug:  
+      msg: "Not implemented for RedHat"
+
+  when: ansible_os_family == 'RedHat'

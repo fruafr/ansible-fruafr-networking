@@ -10,6 +10,7 @@
   #use ufw
   #sudo ufw enable
   - name: UFW - Ensure UFW is enabled
+    become: true
     ufw:
       state: enabled
     register: ufw_started
@@ -17,6 +18,7 @@
   - block:
     #sudo ufw allow ssh
     - name: UFW - SSH - ufw allow ssh
+      become: true
       ufw:
         rule: allow
         name: OpenSSH
@@ -24,6 +26,7 @@
 
     #sudo ufw allow [ssh_port]
     - name: UFW - SSH - ufw allow [ssh_port] on non standard port
+      become: true
       ufw:
         rule: allow
         port: "{{ ssh_port | int }}"
@@ -34,3 +37,34 @@
     when: ufw_started is succeeded
 
   when: ansible_os_family == 'Debian'
+
+#RedHat
+- block:
+  #use firewalld
+  - block:
+    - name: Firewalld - SSH - firewalld-cmd --add-service=ssh --permanent
+      become: true
+      ansible.posix.firewalld:
+        service: ssh
+        permanent: true
+        state: enabled
+      when: 'ssh_port|int == 22'
+
+  - block:
+    - name: Firewalld - SSH - firewalld-cmd allow ssh port/tcp on non standard port
+      become: true
+      ansible.posix.firewalld:
+        port: "{{ ssh_port | int }}/tcp"
+        permanent: true
+        state: enabled
+      when: 'ssh_port|int != 22'
+
+    - name: Firewalld - SSH - firewalld-cmd allow ssh port/udp on non standard port
+      become: true
+      ansible.posix.firewalld:
+        port: "{{ ssh_port | int }}/udp"
+        permanent: true
+        state: enabled
+      when: 'ssh_port|int != 22'
+
+  when: ansible_os_family == 'RedHat'
