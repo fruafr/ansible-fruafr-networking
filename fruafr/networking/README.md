@@ -1,6 +1,9 @@
 # Ansible Collection - fruafr.networking
 
- Ansible collection for networking tools - Supports Debian and RedHat families
+Ansible collection for networking tools - Supports Debian and RedHat families
+
+Roles
+-----
 
 The roles contained in this collection are the following:
 - ansible_ping : Ansible ping wrapper
@@ -39,3 +42,14 @@ GNU 3.0 or later
 Author Information
 ------------------
 David Heurtevent <david@heurtevent.org>
+
+
+Note
+----
+The author is fully aware that the use of Ansible with some imperative calls (similar to Bash) is an anti-pattern.
+
+
+Changelog
+---------
+1.0.1 - Added support for RedHat family (beta)
+1.0.0 - Initial release (beta)
