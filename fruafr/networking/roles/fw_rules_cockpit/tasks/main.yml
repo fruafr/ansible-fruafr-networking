@@ -33,6 +33,14 @@
   #use firewalld
 
   - block:
+    #allow cockpit service
+    - name: FIREWALLD - Cockpit service
+      become: true
+      ansible.posix.firewalld:
+        service: cockpit
+        permanent: true
+        state: enabled
+
     #allow 9090/tcp
     - name: FIREWALLD - Cockpit - allow 9090/tcp
       become: true
